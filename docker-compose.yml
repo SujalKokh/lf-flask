@@ -7,3 +7,29 @@ services:
       - "5000:5000"
     volumes:
       - .:/python-flask
+    depends_on: 
+      - database
+
+  database:
+    build: 
+      context: .
+      dockerfile: db.dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: lf-iac
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: lf-iac
+    container_name: lf-iac-db
+    ports:
+      - 33066:3306
+    volumes:
+      - lfiacdata:/var/lib/mysql
+
+  adminer:`
+    image: adminer
+    ports:
+      - 5001:8080
+
+# persisted storage
+volumes:
+  lfiacdata:
